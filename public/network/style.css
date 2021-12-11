@@ -1,0 +1,45 @@
+:root {
+    --main-color: #1a1a1a;
+    --secondary-color: #ffffff;
+    --stroke-color: #aaaaaa;
+}
+
+body, body * {
+    margin: 0;
+    padding: 0;
+    color: var(--main-color);
+    font-family: 'Open-Sans', sans-serif;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+}
+
+
+
+#chart {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+
+.link {
+    stroke: var(--stroke-color);
+}
+
+.node text {
+    font-size: 1.15rem;
+    font-weight: 400;
+    stroke: var(--main-color);
+    cursor: pointer;
+}
+
+.node circle{
+    stroke: var(--secondary-color);
+    stroke-width: 0.15rem;
+    fill: var(--main-color);
+}
