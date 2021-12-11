@@ -2,13 +2,14 @@
     --main-color: #1a1a1a;
     --secondary-color: #ffffff;
     --stroke-color: #aaaaaa;
+    --node-color: #ed184e;
 }
 
 body, body * {
     margin: 0;
     padding: 0;
     color: var(--main-color);
-    font-family: 'Open-Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
 }
 
 body {
@@ -41,5 +42,5 @@ body {
 .node circle{
     stroke: var(--secondary-color);
     stroke-width: 0.15rem;
-    fill: var(--main-color);
+    fill: var(--node-color);
 }

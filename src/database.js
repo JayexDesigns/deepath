@@ -35,9 +35,19 @@ const addConnection = (user1, user2) => {
     fs.writeFileSync(path.join(__dirname, "../database/users.json"), JSON.stringify({users}));
 };
 
+const removeConnection = (user1, user2) => {
+    let users = getUsers();
+    let index1 = indexOfCallback(users, user => user["username"] === user1);
+    let index2 = indexOfCallback(users, user => user["username"] === user2);
+    users[index1].friends.splice(indexOfCallback(users[index1].friends, user => user === user2), 1);
+    users[index2].friends.splice(indexOfCallback(users[index2].friends, user => user === user1), 1);
+    fs.writeFileSync(path.join(__dirname, "../database/users.json"), JSON.stringify({users}));
+};
+
 module.exports = {
     createDatabase,
     getUsers,
     addUser,
     addConnection,
+    removeConnection,
 };
