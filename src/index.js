@@ -51,11 +51,29 @@ const removeConnection = (username1, username2) => {
 
 
 
+let chatHistory = [];
+
+const addMessage = (user, message) => {
+    chatHistory.push({"username": user, "message": message});
+    updateChat(chatHistory);
+    console.log(`[${getTime()}][Server][Chat]: New Message ${user}: ${message}`);
+};
+
+
+
+
+
 const wss = new WebSocket.Server({ port: SOCKET_PORT });
 console.log(`[${getTime()}][Server][WebSocket]: Listening On Port ${SOCKET_PORT}`);
 
 let generalChatUpdate = [];
 let usersTrackUpdate = [];
+
+const updateChat = (chatHistory) => {
+    for (let i = 0; i < generalChatUpdate.length; ++i) {
+        generalChatUpdate[i].send(JSON.stringify({type: "Chat", chatHistory}));
+    }
+};
 
 const updateUsers = (users) => {
     for (let i = 0; i < usersTrackUpdate.length; ++i) {
@@ -70,6 +88,7 @@ wss.on('connection', (socket) => {
         if (message.type === "ListenGeneralChat") {
             console.log(`[${getTime()}][Server][WebSocket]: New Socket Listening For General Chat Updates`);
             generalChatUpdate.push(socket);
+            socket.send(JSON.stringify({type: "Chat", chatHistory}));
         }
         else if (message.type === "ListenUsers") {
             console.log(`[${getTime()}][Server][WebSocket]: New Socket Listening For User Updates`);
@@ -95,6 +114,9 @@ wss.on('connection', (socket) => {
         }
         else if (message.type === "RemoveConnection") {
             removeConnection(message.users[0], message.users[1]);
+        }
+        else if (message.type === "AddMessage") {
+            addMessage(message.username, message.message);
         }
     });
 });

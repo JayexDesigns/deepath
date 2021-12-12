@@ -6,6 +6,7 @@ const loginInput = document.getElementById("login-username");
 var loggedIn = false;
 var username = "";
 var users = [];
+var chatHistory = [];
 
 loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -41,6 +42,30 @@ const removeFriend = (user) => {
 
 
 
+const parseChat = (chatHistory) => {
+    let chat = document.getElementById("chat-container");
+    chat.innerHTML = ``;
+    for (let i = 0; i < chatHistory.length; ++i) {
+        chat.innerHTML += `<li class="message"><b>${chatHistory[i]["username"]}: </b><p>${chatHistory[i]["message"]}</p></li>`;
+    }
+    chat.scrollTop = chat.scrollHeight;
+};
+
+document.getElementById("chat-form").addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (loggedIn) {
+        let message = document.getElementById("chat-input").value;
+        if (message === "") showAlert("The message can not be empty");
+        else {
+            ws.send(JSON.stringify({type: "AddMessage", username, message}));
+            document.getElementById("chat-input").value = "";
+        }
+    }
+    else showAlert("First you'll need to login");
+});
+
+
+
 const ws = new WebSocket(`ws://${location.host}:${SOCKET_PORT}`);
 
 ws.onopen = () => {
@@ -56,8 +81,13 @@ ws.onmessage = (event) => {
             loggedIn = true;
             document.getElementById("login").remove();
             parseUsers(users);
+            parseChat(chatHistory);
         }
         else showAlert(message.status);
+    }
+    else if (message.type === "Chat") {
+        chatHistory = message.chatHistory;
+        if (loggedIn) parseChat(chatHistory);
     }
     else if (message.type === "Users") {
         users = message.users;
