@@ -9,6 +9,9 @@ const indexOfCallback = (array, callback) => {
 };
 
 const createDatabase = () => {
+    if (!fs.existsSync(path.join(__dirname, "../database/"))) {
+        fs.mkdirSync(path.join(__dirname, "../database/"));
+    }
     if (!fs.existsSync(path.join(__dirname, "../database/users.json"))) {
         fs.writeFileSync(path.join(__dirname, "../database/users.json"), JSON.stringify({"users": []}));
     }
