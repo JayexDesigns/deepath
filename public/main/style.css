@@ -11,10 +11,6 @@ body, body * {
     font-family: 'Open Sans', sans-serif;
 }
 
-body {
-    overflow: hidden;
-}
-
 
 
 #alert {
@@ -200,11 +196,11 @@ body {
 }
 #chat-send {
     margin-left: 1.5rem;
-    width: 3rem;
+    width: 5rem;
     height: 3rem;
     border: 0.2rem solid var(--main-color);
     background-color: var(--background-color);
-    border-radius: 50%;
+    border-radius: 10rem;
     transition: .25s ease-in-out;
 }
 #chat-send:hover {
